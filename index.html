@@ -3,156 +3,43 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <title>For My G 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+html, body { margin:0; width:100%; height:100%; }
+body { font-family: 'Quicksand', sans-serif; background:#ffe6ef; overflow:hidden; }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-}
+#app { width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; position:relative; }
+h1 { font-family:'Pacifico', cursive; color:#ff4d88; font-size:clamp(1.8rem,5vw,3rem); margin-bottom:30px; }
+.last-text { font-size:1.3rem; color:#444; margin:14px 0; max-width:90%; }
 
-body {
-  font-family: 'Quicksand', sans-serif;
-  background: #ffe6ef;
-  overflow: hidden;
-}
+button { border:none; border-radius:999px; padding:14px 36px; font-size:1.1rem; cursor:pointer; transition: transform 0.35s ease; max-width:90vw; }
+#yesBtn { background:#ff4d88; color:white; animation:pulse 2.5s infinite; z-index:2; }
+@keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
 
-/* APP */
-#app {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-}
+#noBtn { margin-top:18px; background:#f5f5f5; color:#333; position:relative; }
 
-/* TEXT */
-h1 {
-  font-family: 'Pacifico', cursive;
-  color: #ff4d88;
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  margin-bottom: 30px;
-}
+#overlay { position:fixed; inset:0; background:#ff4d88; opacity:0; pointer-events:none; z-index:999; transition:transform 0.8s ease, opacity 0.8s ease; transform:scale(0); }
+#overlay.active { opacity:1; transform:scale(25); }
 
-.last-text {
-  font-size: 1.3rem;
-  color: #444;
-  margin: 14px 0;
-  max-width: 90%;
-}
+#lastScreen { position:fixed; inset:0; background:#ffe6ef; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; opacity:0; transition:opacity 0.8s ease; pointer-events:none; }
 
-/* BUTTONS */
-button {
-  border: none;
-  border-radius: 999px;
-  padding: 14px 36px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: transform 0.35s ease;
-  max-width: 90vw;
-}
+#lastScreen.show { opacity:1; pointer-events:auto; }
 
-/* YES */
-#yesBtn {
-  background: #ff4d88;
-  color: white;
-  animation: pulse 2.5s infinite;
-}
+.moonwalk { width:180px; max-width:70vw; margin:24px 0; }
 
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-/* NO */
-#noBtn {
-  margin-top: 18px;
-  background: #f5f5f5;
-  color: #333;
-  position: relative;
-}
-
-/* FULLSCREEN OVERLAY (YES EXPANSION) */
-#overlay {
-  position: fixed;
-  inset: 0;
-  background: #ff4d88;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.6s ease;
-  z-index: 999;
-}
-
-#overlay.active {
-  opacity: 1;
-}
-
-/* LAST SCREEN */
-#lastScreen {
-  position: fixed;
-  inset: 0;
-  background: #ffe6ef;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  pointer-events: none;
-}
-
-#lastScreen.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* MOONWALK */
-.moonwalk {
-  width: 180px;
-  max-width: 70vw;
-  margin: 24px 0;
-}
-
-/* FLOWERS */
-.flower {
-  position: fixed;
-  top: -40px;
-  font-size: 26px;
-  animation: fall linear infinite;
-  pointer-events: none;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
+.flower { position:fixed; top:-40px; font-size:26px; animation:fall linear infinite; pointer-events:none; }
+@keyframes fall { to { transform:translateY(110vh); } }
 </style>
 </head>
 
 <body>
 
 <div id="app">
-  <h1>
-    Hey MY G 💕<br>
-    will you be my valentine forever and ever?
-  </h1>
-
+  <h1>Hey MY G 💕<br>will you be my valentine forever and ever?</h1>
   <button id="yesBtn">Yes 💖</button>
   <button id="noBtn">No 😶</button>
 </div>
@@ -160,19 +47,10 @@ button {
 <div id="overlay"></div>
 
 <div id="lastScreen">
-  <p class="last-text">
-    Good choice after all these failed attempts of saying no 😉
-  </p>
-
+  <p class="last-text">Good choice after all these failed attempts of saying no 😉</p>
   <img class="moonwalk" src="moonwalk.gif" alt="Moonwalk"/>
-
-  <p class="last-text">
-    Be ready by 7:15, I will pick you up — the table is booked 💫
-  </p>
-
-  <p class="last-text">
-    I hope you liked the flowers 🌹🌻
-  </p>
+  <p class="last-text">Be ready by 7:15, I will pick you up — the table is booked 💫</p>
+  <p class="last-text">I hope you liked the flowers 🌹🌻</p>
 </div>
 
 <script>
@@ -183,7 +61,6 @@ const lastScreen = document.getElementById("lastScreen");
 
 let noCount = 0;
 let yesScale = 1;
-
 const noTexts = [
   "Are you sureeee? 🥺",
   "Think again, pretty 💭",
@@ -193,44 +70,48 @@ const noTexts = [
   "kaise laga mera mazak 😄"
 ];
 
-function moveNoButtonSafe() {
-  const padding = 20;
-  const rect = noBtn.getBoundingClientRect();
-  const maxX = window.innerWidth - rect.width - padding;
-  const maxY = window.innerHeight - rect.height - padding;
-
-  noBtn.style.position = "fixed";
-  noBtn.style.left = Math.random() * maxX + "px";
-  noBtn.style.top = Math.random() * maxY + "px";
+function moveNoButtonSafe(){
+  const rect=noBtn.getBoundingClientRect();
+  const maxX=window.innerWidth-rect.width-20;
+  const maxY=window.innerHeight-rect.height-20;
+  noBtn.style.position="fixed";
+  noBtn.style.left=Math.random()*maxX+"px";
+  noBtn.style.top=Math.random()*maxY+"px";
 }
 
-function startFlowerShower() {
-  setInterval(() => {
-    const flower = document.createElement("div");
-    flower.className = "flower";
-    flower.textContent = Math.random() > 0.5 ? "🌹" : "🌻";
-    flower.style.left = Math.random() * 100 + "vw";
-    flower.style.animationDuration = (3 + Math.random() * 3) + "s";
+function startFlowerShower(){
+  setInterval(()=>{
+    const flower=document.createElement("div");
+    flower.className="flower";
+    flower.textContent=Math.random()>0.5?"🌹":"🌻";
+    flower.style.left=Math.random()*100+"vw";
+    flower.style.animationDuration=(3+Math.random()*3)+"s";
     document.body.appendChild(flower);
-    setTimeout(() => flower.remove(), 7000);
-  }, 300);
+    setTimeout(()=>flower.remove(),7000);
+  },300);
 }
 
-noBtn.addEventListener("click", () => {
+noBtn.addEventListener("click",()=>{
   noCount++;
-  noBtn.textContent = noTexts[noCount % noTexts.length];
-  yesScale += 0.2;
-  yesBtn.style.transform = `scale(${yesScale})`;
+  noBtn.textContent=noTexts[noCount % noTexts.length];
+  yesScale+=0.2;
+  yesBtn.style.transform=`scale(${yesScale})`;
   moveNoButtonSafe();
 });
 
-yesBtn.addEventListener("click", () => {
+yesBtn.addEventListener("click",()=>{
+  // Show overlay for smooth expansion
   overlay.classList.add("active");
+  yesBtn.style.transition="transform 0.8s ease";
+  yesBtn.style.transform=`scale(1.2)`; // tiny pulse for effect
 
-  setTimeout(() => {
+  // Wait for overlay expansion
+  setTimeout(()=>{
+    overlay.style.transition="opacity 0.8s ease";
+    overlay.style.opacity="0"; // fade overlay out
     lastScreen.classList.add("show");
     startFlowerShower();
-  }, 500);
+  },800);
 });
 </script>
 
