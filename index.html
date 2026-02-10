@@ -47,7 +47,7 @@ h1 {
   font-weight: 400;
   color: #4a2c2a;
   font-size: clamp(22px, 5vw, 34px);
-  margin-bottom: 60px; /* MORE SPACE BELOW TEXT */
+  margin-bottom: 50px;
 }
 
 /* BUTTONS */
@@ -64,7 +64,7 @@ button {
 #yesBtn {
   background: #ff5c8a;
   color: white;
-  margin-bottom: 90px; /* BIG GAP between YES and NO */
+  margin-bottom: 28px; /* NO just below YES */
   animation: pulse 2s infinite;
   z-index: 2;
 }
@@ -155,24 +155,29 @@ const noMessages = [
 
 let noIndex = 0;
 let yesScale = 1;
+let noClickedOnce = false;
 
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const firstScreen = document.getElementById("firstScreen");
 const finalScreen = document.getElementById("finalScreen");
 
-/* PLACE NO INITIALLY */
-positionNoButton();
+/* INITIAL POSITION: just below YES */
+function placeNoBelowYes() {
+  const yesRect = yesBtn.getBoundingClientRect();
+  noBtn.style.left = (yesRect.left + yesRect.width / 2 - noBtn.offsetWidth / 2) + "px";
+  noBtn.style.top = (yesRect.bottom + 16) + "px";
+}
 
-function positionNoButton() {
+placeNoBelowYes();
+
+/* MOVE NO SAFELY (after click) */
+function moveNoButton() {
   const padding = 20;
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  const maxX = window.innerWidth - btnWidth - padding;
-  const maxY = window.innerHeight - btnHeight - padding;
-
-  const minY = window.innerHeight / 2 + 40; // keep it BELOW yes
+  const minY = window.innerHeight / 2 + 40;
 
   const x = Math.random() * maxX;
   const y = Math.random() * (maxY - minY) + minY;
@@ -186,10 +191,16 @@ noBtn.addEventListener("click", () => {
   noBtn.textContent = noMessages[noIndex];
   noIndex = (noIndex + 1) % noMessages.length;
 
-  yesScale += 0.22; // visible growth
+  yesScale += 0.22;
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  positionNoButton();
+  if (!noClickedOnce) {
+    noClickedOnce = true;
+  } else {
+    moveNoButton();
+  }
+
+  if (noClickedOnce) moveNoButton();
 });
 
 /* YES CLICK */
@@ -220,7 +231,7 @@ function createFlower() {
 setInterval(createFlower, 350);
 
 /* REPOSITION ON RESIZE */
-window.addEventListener("resize", positionNoButton);
+window.addEventListener("resize", placeNoBelowYes);
 </script>
 
 </body>
