@@ -25,13 +25,14 @@ body {
   background: linear-gradient(180deg, #ffe4ec, #ffd6e5);
 }
 
+/* SCREENS */
 .screen {
   position: fixed;
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   transition: opacity 0.8s ease;
 }
 
@@ -46,23 +47,24 @@ h1 {
   font-weight: 400;
   color: #4a2c2a;
   font-size: clamp(22px, 5vw, 34px);
-  margin-bottom: 40px;
+  margin-bottom: 60px; /* MORE SPACE BELOW TEXT */
 }
 
 /* BUTTONS */
 button {
   border: none;
   border-radius: 999px;
-  padding: 16px 40px;
+  padding: 16px 42px;
   font-size: 18px;
   cursor: pointer;
-  transition: transform 0.35s ease, top 0.35s ease, left 0.35s ease;
+  transition: transform 0.35s ease, left 0.35s ease, top 0.35s ease;
+  white-space: nowrap;
 }
 
 #yesBtn {
   background: #ff5c8a;
   color: white;
-  margin-bottom: 18px;
+  margin-bottom: 90px; /* BIG GAP between YES and NO */
   animation: pulse 2s infinite;
   z-index: 2;
 }
@@ -126,7 +128,7 @@ button {
   <h1>Hey MY G 💗<br>will you be my valentine for ever and ever?</h1>
 
   <button id="yesBtn">Yes 💗</button>
-  <button id="noBtn" style="top:65%; left:50%; transform:translate(-50%,-50%)">No</button>
+  <button id="noBtn">No</button>
 </div>
 
 <!-- FINAL SCREEN -->
@@ -159,30 +161,39 @@ const yesBtn = document.getElementById("yesBtn");
 const firstScreen = document.getElementById("firstScreen");
 const finalScreen = document.getElementById("finalScreen");
 
-function moveNoButton() {
+/* PLACE NO INITIALLY */
+positionNoButton();
+
+function positionNoButton() {
   const padding = 20;
-  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+
+  const maxX = window.innerWidth - btnWidth - padding;
+  const maxY = window.innerHeight - btnHeight - padding;
+
+  const minY = window.innerHeight / 2 + 40; // keep it BELOW yes
 
   const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
+  const y = Math.random() * (maxY - minY) + minY;
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
 
+/* NO CLICK */
 noBtn.addEventListener("click", () => {
   noBtn.textContent = noMessages[noIndex];
   noIndex = (noIndex + 1) % noMessages.length;
 
-  yesScale += 0.25; // BIG visible growth
+  yesScale += 0.22; // visible growth
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  moveNoButton();
+  positionNoButton();
 });
 
+/* YES CLICK */
 yesBtn.addEventListener("click", () => {
-  // If YES is huge, let it fill screen first
   yesBtn.style.animation = "none";
   yesBtn.style.position = "fixed";
   yesBtn.style.inset = "0";
@@ -207,15 +218,10 @@ function createFlower() {
 }
 
 setInterval(createFlower, 350);
+
+/* REPOSITION ON RESIZE */
+window.addEventListener("resize", positionNoButton);
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
