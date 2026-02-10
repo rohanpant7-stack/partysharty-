@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For My G 💖</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
-* { box-sizing: border-box; }
+* { box-sizing:border-box; }
 html, body { margin:0; width:100%; height:100%; }
-body { font-family: 'Quicksand', sans-serif; background:#ffe6ef; overflow:hidden; }
+body { font-family:'Quicksand', sans-serif; background:#ffe6ef; overflow:hidden; }
 
 #app { width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; position:relative; }
 h1 { font-family:'Pacifico', cursive; color:#ff4d88; font-size:clamp(1.8rem,5vw,3rem); margin-bottom:30px; }
@@ -35,7 +33,6 @@ button { border:none; border-radius:999px; padding:14px 36px; font-size:1.1rem; 
 @keyframes fall { to { transform:translateY(110vh); } }
 </style>
 </head>
-
 <body>
 
 <div id="app">
@@ -61,15 +58,16 @@ const lastScreen = document.getElementById("lastScreen");
 
 let noCount = 0;
 let yesScale = 1;
+
+// NO button text sequence
 const noTexts = [
   "Are you sureeee? 🥺",
-  "Think again, my G 💭",
-  "Okay…",
-  "trauma de rhi ho tum mujhe",
-  "zuru zuru chale ? 😌",
-  "aabh nahi puchunga  😏",
-  "kaise laga mera mazak 😄"
-  "baar baar puchunga 😂😂"
+  "Pleaseeeeeeeee 😢",
+  "Okay? 😏",
+  "Zuru zuru chale 😌",
+  "I am asking for final time 😬",
+  "Kaisa laga mera mazak 😄",
+  "Baar baar puchta rahunga 😎"
 ];
 
 function moveNoButtonSafe(){
@@ -93,23 +91,23 @@ function startFlowerShower(){
   },300);
 }
 
+// NO click
 noBtn.addEventListener("click",()=>{
+  noBtn.textContent = noTexts[noCount % noTexts.length];
   noCount++;
-  noBtn.textContent=noTexts[noCount % noTexts.length];
-  yesScale+=0.2;
-  yesBtn.style.transform=`scale(${yesScale})`;
+  yesScale += 0.2;
+  yesBtn.style.transform = `scale(${yesScale})`;
   moveNoButtonSafe();
 });
 
+// YES click
 yesBtn.addEventListener("click",()=>{
-  // Show overlay for smooth expansion
   overlay.classList.add("active");
   yesBtn.style.transition="transform 0.8s ease";
-  yesBtn.style.transform=`scale(1.2)`; // tiny pulse effect
+  yesBtn.style.transform=`scale(1.2)`; 
 
-  // Wait for overlay expansion
   setTimeout(()=>{
-    // Remove YES and NO buttons from view
+    // Remove YES and NO buttons
     yesBtn.style.display="none";
     noBtn.style.display="none";
 
@@ -125,4 +123,3 @@ yesBtn.addEventListener("click",()=>{
 
 </body>
 </html>
-
