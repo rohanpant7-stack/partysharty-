@@ -6,7 +6,7 @@
 
 <title>For My G 💖</title>
 
-<!-- ORIGINAL FONTS (UNCHANGED) -->
+<!-- ORIGINAL FONTS -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -22,11 +22,11 @@ html, body {
 
 body {
   font-family: 'Quicksand', sans-serif;
-  background: #ffe6ef; /* soft pink only */
+  background: #ffe6ef;
   overflow: hidden;
 }
 
-/* MAIN APP */
+/* APP */
 #app {
   width: 100vw;
   height: 100vh;
@@ -67,11 +67,12 @@ button {
   max-width: 90vw;
 }
 
-/* YES */
+/* YES BUTTON */
 #yesBtn {
   background: #ff4d88;
   color: white;
   animation: pulse 2.5s infinite;
+  z-index: 2;
 }
 
 @keyframes pulse {
@@ -80,7 +81,21 @@ button {
   100% { transform: scale(1); }
 }
 
-/* NO */
+/* YES FULLSCREEN EXPAND */
+#yesBtn.expand {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(25);
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  animation: none;
+  transition: transform 0.9s ease;
+  z-index: 999;
+}
+
+/* NO BUTTON */
 #noBtn {
   margin-top: 18px;
   background: #f5f5f5;
@@ -95,11 +110,11 @@ button {
   margin: 24px 0;
 }
 
-/* FLOWER SHOWER */
+/* FLOWERS */
 .flower {
   position: fixed;
-  top: -50px;
-  font-size: 24px;
+  top: -40px;
+  font-size: 26px;
   animation: fall linear infinite;
   pointer-events: none;
 }
@@ -115,7 +130,7 @@ button {
 <body>
 
 <div id="app">
-  <h1 id="title">
+  <h1>
     Hey MY G 💕<br>
     will you be my valentine forever and ever?
   </h1>
@@ -180,30 +195,33 @@ noBtn.addEventListener("click", () => {
 });
 
 yesBtn.addEventListener("click", () => {
-  app.innerHTML = `
-    <p class="last-text">
-      Good choice after all these failed attempts of saying no 😉
-    </p>
+  yesBtn.classList.add("expand");
 
-<img
-  class="moonwalk"
-  src="moonwalk.gif"
-  alt="Moonwalk"
-/>
+  setTimeout(() => {
+    app.innerHTML = `
+      <p class="last-text">
+        Good choice after all these failed attempts of saying no 😉
+      </p>
 
-    <p class="last-text">
-      Be ready by 7:15, I will pick you up — the table is booked 💫
-    </p>
+      <img
+        class="moonwalk"
+        src="moonwalk.gif"
+        alt="Moonwalk"
+      />
 
-    <p class="last-text">
-      I hope you liked the flowers 🌹🌻
-    </p>
-  `;
+      <p class="last-text">
+        Be ready by 7:15, I will pick you up — the table is booked 💫
+      </p>
 
-  startFlowerShower();
+      <p class="last-text">
+        I hope you liked the flowers 🌹🌻
+      </p>
+    `;
+
+    startFlowerShower();
+  }, 900);
 });
 </script>
 
 </body>
 </html>
-
