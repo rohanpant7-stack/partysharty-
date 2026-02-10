@@ -71,12 +71,28 @@ const noTexts = [
 ];
 
 function moveNoButtonSafe(){
-  const rect=noBtn.getBoundingClientRect();
-  const maxX=window.innerWidth-rect.width-20;
-  const maxY=window.innerHeight-rect.height-20;
-  noBtn.style.position="fixed";
-  noBtn.style.left=Math.random()*maxX+"px";
-  noBtn.style.top=Math.random()*maxY+"px";
+    const padding = 20;
+    const rect = noBtn.getBoundingClientRect();
+    const yesRect = yesBtn.getBoundingClientRect();
+    const maxX = window.innerWidth - rect.width - padding;
+    const maxY = window.innerHeight - rect.height - padding;
+
+    let newX, newY, attempts = 0;
+    do {
+        newX = Math.random() * maxX;
+        newY = Math.random() * maxY;
+        attempts++;
+    } while (
+        newX < yesRect.right + padding &&
+        newX + rect.width > yesRect.left - padding &&
+        newY < yesRect.bottom + padding &&
+        newY + rect.height > yesRect.top - padding &&
+        attempts < 100
+    );
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
 }
 
 function startFlowerShower(){
