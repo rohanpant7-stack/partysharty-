@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 <title>For My G 💖</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+<!-- ORIGINAL FONTS (UNCHANGED) -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -20,16 +22,15 @@ html, body {
 
 body {
   font-family: 'Quicksand', sans-serif;
-  background: linear-gradient(135deg, #ffe6f0, #fff6d9);
+  background: #ffe6ef; /* soft pink only */
   overflow: hidden;
 }
 
-/* SCREENS */
-.screen {
-  position: fixed;
-  inset: 0;
+/* MAIN APP */
+#app {
   width: 100vw;
   height: 100vh;
+  position: relative;
 
   display: flex;
   flex-direction: column;
@@ -37,41 +38,33 @@ body {
   align-items: center;
   text-align: center;
 
-  padding: 24px;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.98);
+  padding: 20px;
 }
 
 /* TEXT */
 h1 {
   font-family: 'Pacifico', cursive;
-  font-size: clamp(1.8rem, 5vw, 3rem);
   color: #ff4d88;
+  font-size: clamp(1.8rem, 5vw, 3rem);
   margin-bottom: 30px;
 }
 
-/* BUTTONS */
-.buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+.last-text {
+  font-size: 1.3rem;
+  color: #444;
+  margin: 14px 0;
+  max-width: 90%;
 }
 
+/* BUTTONS */
 button {
-  padding: 14px 36px;
-  border-radius: 999px;
   border: none;
+  border-radius: 999px;
+  padding: 14px 36px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: all 0.4s ease;
+  transition: transform 0.35s ease;
   max-width: 90vw;
-  white-space: nowrap;
 }
 
 /* YES */
@@ -83,77 +76,63 @@ button {
 
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+  50% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
 
 /* NO */
 #noBtn {
-  background: #f2f2f2;
+  margin-top: 18px;
+  background: #f5f5f5;
   color: #333;
   position: relative;
 }
 
-/* LAST PAGE */
-.last-text {
-  font-size: 1.35rem;
-  color: #444;
-  margin: 14px 0;
+/* MOONWALK */
+.moonwalk {
+  width: 180px;
+  max-width: 70vw;
+  margin: 24px 0;
 }
 
-.moonwalk {
-  width: 160px;
-  margin: 22px 0;
+/* FLOWER SHOWER */
+.flower {
+  position: fixed;
+  top: -50px;
+  font-size: 24px;
+  animation: fall linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- FIRST SCREEN -->
-<div id="firstScreen" class="screen">
-  <h1>
+<div id="app">
+  <h1 id="title">
     Hey MY G 💕<br>
     will you be my valentine forever and ever?
   </h1>
 
-  <div class="buttons">
-    <button id="yesBtn">Yes 💖</button>
-    <button id="noBtn">No 😶</button>
-  </div>
-</div>
-
-<!-- LAST SCREEN -->
-<div id="lastScreen" class="screen hidden">
-  <p class="last-text">
-    Good choice after all these failed attempts of saying no 😉
-  </p>
-
-  <img
-    class="moonwalk"
-    src="https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif"
-    alt="Moonwalk"
-  />
-
-  <p class="last-text">
-    Be ready by 7:15, I will pick you up — the table is booked 💫
-  </p>
-
-  <p class="last-text">
-    I hope you liked the flowers 🌹🌻
-  </p>
+  <button id="yesBtn">Yes 💖</button>
+  <button id="noBtn">No 😶</button>
 </div>
 
 <script>
+const app = document.getElementById("app");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const firstScreen = document.getElementById("firstScreen");
-const lastScreen = document.getElementById("lastScreen");
 
-let noClicks = 0;
+let noCount = 0;
 let yesScale = 1;
 
-const noMessages = [
+const noTexts = [
   "Are you sureeee? 🥺",
   "Think again, pretty 💭",
   "Okay… but just once more?",
@@ -162,8 +141,8 @@ const noMessages = [
   "kaise laga mera mazak 😄"
 ];
 
-function moveNoButton() {
-  const padding = 16;
+function moveNoButtonSafe() {
+  const padding = 20;
   const rect = noBtn.getBoundingClientRect();
 
   const maxX = window.innerWidth - rect.width - padding;
@@ -173,31 +152,55 @@ function moveNoButton() {
   const y = Math.random() * maxY;
 
   noBtn.style.position = "fixed";
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+function startFlowerShower() {
+  setInterval(() => {
+    const flower = document.createElement("div");
+    flower.className = "flower";
+    flower.textContent = Math.random() > 0.5 ? "🌹" : "🌻";
+    flower.style.left = Math.random() * 100 + "vw";
+    flower.style.animationDuration = (3 + Math.random() * 3) + "s";
+    document.body.appendChild(flower);
+
+    setTimeout(() => flower.remove(), 7000);
+  }, 300);
 }
 
 noBtn.addEventListener("click", () => {
-  noClicks++;
-  noBtn.textContent = noMessages[noClicks % noMessages.length];
+  noCount++;
+  noBtn.textContent = noTexts[noCount % noTexts.length];
 
-  yesScale += 0.18;
+  yesScale += 0.22;
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  moveNoButton();
+  moveNoButtonSafe();
 });
 
 yesBtn.addEventListener("click", () => {
-  // reset NO button so it doesn't affect last screen
-  noBtn.style.position = "relative";
-  noBtn.style.left = "";
-  noBtn.style.top = "";
+  app.innerHTML = `
+    <p class="last-text">
+      Good choice after all these failed attempts of saying no 😉
+    </p>
 
-  firstScreen.classList.add("hidden");
+    <img
+      class="moonwalk"
+      src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif"
+      alt="Moonwalk"
+    />
 
-  setTimeout(() => {
-    lastScreen.classList.remove("hidden");
-  }, 700);
+    <p class="last-text">
+      Be ready by 7:15, I will pick you up — the table is booked 💫
+    </p>
+
+    <p class="last-text">
+      I hope you liked the flowers 🌹🌻
+    </p>
+  `;
+
+  startFlowerShower();
 });
 </script>
 
