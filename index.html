@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hey MY G 💗</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: linear-gradient(180deg, #ffe4ec, #ffd6e5);
+}
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* TEXT */
+h1 {
+  text-align: center;
+  font-weight: 400;
+  color: #4a2c2a;
+  font-size: clamp(22px, 5vw, 34px);
+  margin-bottom: 40px;
+}
+
+/* BUTTONS */
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 16px 40px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.35s ease, top 0.35s ease, left 0.35s ease;
+}
+
+#yesBtn {
+  background: #ff5c8a;
+  color: white;
+  margin-bottom: 18px;
+  animation: pulse 2s infinite;
+  z-index: 2;
+}
+
+#noBtn {
+  background: white;
+  color: #555;
+  position: absolute;
+  z-index: 1;
+}
+
+/* YES pulse */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* FINAL SCREEN */
+#finalScreen {
+  background: linear-gradient(180deg, #fff0f5, #ffe4ec);
+}
+
+.final-text {
+  text-align: center;
+  color: #4a2c2a;
+  font-size: clamp(18px, 4.5vw, 26px);
+  line-height: 1.6;
+}
+
+.final-text p {
+  margin: 12px 0;
+}
+
+.moonwalk {
+  width: 140px;
+  margin: 18px auto;
+}
+
+/* FLOWERS */
+.flower {
+  position: absolute;
+  top: -60px;
+  font-size: 28px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0.9;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FIRST SCREEN -->
+<div class="screen" id="firstScreen">
+  <h1>Hey MY G 💗<br>will you be my valentine for ever and ever?</h1>
+
+  <button id="yesBtn">Yes 💗</button>
+  <button id="noBtn" style="top:65%; left:50%; transform:translate(-50%,-50%)">No</button>
+</div>
+
+<!-- FINAL SCREEN -->
+<div class="screen hidden" id="finalScreen">
+  <div class="final-text">
+    <p>Good choice after all these failed attempts of saying no 😌</p>
+
+    <img class="moonwalk" src="moonwalk.gif" alt="moonwalk">
+
+    <p>Be ready by 7:15, I will pick you up — the table is booked</p>
+    <p>I hope you liked the flowers 🌹🌻</p>
+  </div>
+</div>
+
+<script>
+const noMessages = [
+  "Are you sureeee? 🥺",
+  "Think again, pretty 💗",
+  "Okay… but just once more?",
+  "Zuru zuru chale? 🌙",
+  "Last time I’m asking 😌",
+  "Kaise laga mera mazak? 😄"
+];
+
+let noIndex = 0;
+let yesScale = 1;
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const firstScreen = document.getElementById("firstScreen");
+const finalScreen = document.getElementById("finalScreen");
+
+function moveNoButton() {
+  const padding = 20;
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("click", () => {
+  noBtn.textContent = noMessages[noIndex];
+  noIndex = (noIndex + 1) % noMessages.length;
+
+  yesScale += 0.25; // BIG visible growth
+  yesBtn.style.transform = `scale(${yesScale})`;
+
+  moveNoButton();
+});
+
+yesBtn.addEventListener("click", () => {
+  // If YES is huge, let it fill screen first
+  yesBtn.style.animation = "none";
+  yesBtn.style.position = "fixed";
+  yesBtn.style.inset = "0";
+  yesBtn.style.borderRadius = "0";
+  yesBtn.style.fontSize = "28px";
+
+  setTimeout(() => {
+    firstScreen.classList.add("hidden");
+    finalScreen.classList.remove("hidden");
+  }, 500);
+});
+
+/* FLOWER SHOWER */
+function createFlower() {
+  const flower = document.createElement("div");
+  flower.className = "flower";
+  flower.textContent = Math.random() > 0.5 ? "🌹" : "🌻";
+  flower.style.left = Math.random() * 100 + "vw";
+  flower.style.animationDuration = (3 + Math.random() * 3) + "s";
+  finalScreen.appendChild(flower);
+  setTimeout(() => flower.remove(), 7000);
+}
+
+setInterval(createFlower, 350);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
