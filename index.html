@@ -103,13 +103,19 @@ yesBtn.addEventListener("click",()=>{
   // Show overlay for smooth expansion
   overlay.classList.add("active");
   yesBtn.style.transition="transform 0.8s ease";
-  yesBtn.style.transform=`scale(1.2)`; // tiny pulse for effect
+  yesBtn.style.transform=`scale(1.2)`; // tiny pulse effect
 
   // Wait for overlay expansion
   setTimeout(()=>{
+    // Remove YES and NO buttons from view
+    yesBtn.style.display="none";
+    noBtn.style.display="none";
+
+    // Fade overlay out and show last screen
     overlay.style.transition="opacity 0.8s ease";
-    overlay.style.opacity="0"; // fade overlay out
+    overlay.style.opacity="0";
     lastScreen.classList.add("show");
+
     startFlowerShower();
   },800);
 });
