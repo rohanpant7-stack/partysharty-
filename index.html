@@ -25,7 +25,7 @@ body {
   background: linear-gradient(180deg, #ffe4ec, #ffd6e5);
 }
 
-/* SCREENS */
+/* MAIN SCREEN */
 .screen {
   position: fixed;
   inset: 0;
@@ -33,12 +33,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease;
-}
-
-.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* TEXT */
@@ -47,33 +41,32 @@ h1 {
   font-weight: 400;
   color: #4a2c2a;
   font-size: clamp(22px, 5vw, 34px);
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 /* BUTTONS */
 button {
   border: none;
   border-radius: 999px;
-  padding: 16px 42px;
+  padding: 16px 44px;
   font-size: 18px;
   cursor: pointer;
-  transition: transform 0.35s ease, left 0.35s ease, top 0.35s ease;
   white-space: nowrap;
+  transition: transform 0.35s ease, left 0.35s ease, top 0.35s ease;
 }
 
 #yesBtn {
   background: #ff5c8a;
   color: white;
-  margin-bottom: 28px; /* NO just below YES */
   animation: pulse 2s infinite;
-  z-index: 2;
+  z-index: 3;
 }
 
 #noBtn {
   background: white;
   color: #555;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* YES pulse */
@@ -82,65 +75,16 @@ button {
   50% { transform: scale(1.08); }
   100% { transform: scale(1); }
 }
-
-/* FINAL SCREEN */
-#finalScreen {
-  background: linear-gradient(180deg, #fff0f5, #ffe4ec);
-}
-
-.final-text {
-  text-align: center;
-  color: #4a2c2a;
-  font-size: clamp(18px, 4.5vw, 26px);
-  line-height: 1.6;
-}
-
-.final-text p {
-  margin: 12px 0;
-}
-
-.moonwalk {
-  width: 140px;
-  margin: 18px auto;
-}
-
-/* FLOWERS */
-.flower {
-  position: absolute;
-  top: -60px;
-  font-size: 28px;
-  animation: fall linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0.9;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<!-- FIRST SCREEN -->
-<div class="screen" id="firstScreen">
+<div class="screen" id="screen">
   <h1>Hey MY G 💗<br>will you be my valentine for ever and ever?</h1>
 
   <button id="yesBtn">Yes 💗</button>
   <button id="noBtn">No</button>
-</div>
-
-<!-- FINAL SCREEN -->
-<div class="screen hidden" id="finalScreen">
-  <div class="final-text">
-    <p>Good choice after all these failed attempts of saying no 😌</p>
-
-    <img class="moonwalk" src="moonwalk.gif" alt="moonwalk">
-
-    <p>Be ready by 7:15, I will pick you up — the table is booked</p>
-    <p>I hope you liked the flowers 🌹🌻</p>
-  </div>
 </div>
 
 <script>
@@ -153,84 +97,72 @@ const noMessages = [
   "Kaise laga mera mazak? 😄"
 ];
 
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+
 let noIndex = 0;
 let yesScale = 1;
-let noClickedOnce = false;
 
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const firstScreen = document.getElementById("firstScreen");
-const finalScreen = document.getElementById("finalScreen");
-
-/* INITIAL POSITION: just below YES */
+/* ---- INITIAL PERFECT POSITION (below YES) ---- */
 function placeNoBelowYes() {
   const yesRect = yesBtn.getBoundingClientRect();
-  noBtn.style.left = (yesRect.left + yesRect.width / 2 - noBtn.offsetWidth / 2) + "px";
-  noBtn.style.top = (yesRect.bottom + 16) + "px";
+  const noRect = noBtn.getBoundingClientRect();
+
+  const x = yesRect.left + yesRect.width / 2 - noRect.width / 2;
+  const y = yesRect.bottom + 18;
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
 }
 
 placeNoBelowYes();
 
-/* MOVE NO SAFELY (after click) */
-function moveNoButton() {
+/* ---- SAFE RANDOM MOVEMENT ---- */
+function moveNoSafely() {
   const padding = 20;
-  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  const minY = window.innerHeight / 2 + 40;
+  const noW = noBtn.offsetWidth;
+  const noH = noBtn.offsetHeight;
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * (maxY - minY) + minY;
+  const yesRect = yesBtn.getBoundingClientRect();
 
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
+  let x, y;
+  let tries = 0;
+
+  do {
+    x = Math.random() * (window.innerWidth - noW - padding * 2) + padding;
+    y = Math.random() * (window.innerHeight - noH - padding * 2) + padding;
+    tries++;
+  } while (
+    // prevent overlap with YES
+    x + noW > yesRect.left &&
+    x < yesRect.right &&
+    y + noH > yesRect.top &&
+    y < yesRect.bottom &&
+    tries < 50
+  );
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
 }
 
-/* NO CLICK */
+/* ---- NO CLICK ---- */
 noBtn.addEventListener("click", () => {
   noBtn.textContent = noMessages[noIndex];
   noIndex = (noIndex + 1) % noMessages.length;
 
-  yesScale += 0.22;
+  yesScale += 0.25;
   yesBtn.style.transform = `scale(${yesScale})`;
 
-  if (!noClickedOnce) {
-    noClickedOnce = true;
-  } else {
-    moveNoButton();
-  }
-
-  if (noClickedOnce) moveNoButton();
+  moveNoSafely();
 });
 
-/* YES CLICK */
+/* ---- YES CLICK (you already liked this part, kept clean) ---- */
 yesBtn.addEventListener("click", () => {
-  yesBtn.style.animation = "none";
-  yesBtn.style.position = "fixed";
-  yesBtn.style.inset = "0";
-  yesBtn.style.borderRadius = "0";
-  yesBtn.style.fontSize = "28px";
-
-  setTimeout(() => {
-    firstScreen.classList.add("hidden");
-    finalScreen.classList.remove("hidden");
-  }, 500);
+  alert("💗 Good choice 💗");
 });
 
-/* FLOWER SHOWER */
-function createFlower() {
-  const flower = document.createElement("div");
-  flower.className = "flower";
-  flower.textContent = Math.random() > 0.5 ? "🌹" : "🌻";
-  flower.style.left = Math.random() * 100 + "vw";
-  flower.style.animationDuration = (3 + Math.random() * 3) + "s";
-  finalScreen.appendChild(flower);
-  setTimeout(() => flower.remove(), 7000);
-}
-
-setInterval(createFlower, 350);
-
-/* REPOSITION ON RESIZE */
+/* ---- FIX ON RESIZE ---- */
 window.addEventListener("resize", placeNoBelowYes);
 </script>
 
