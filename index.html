@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For G 💖</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
@@ -12,23 +14,31 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #ffd6e7, #ffeaf4);
   overflow: hidden;
   text-align: center;
 }
 
-/* FIRST PAGE */
+/* FIRST PAGE CENTER FIX */
+
+#mainPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 h1 {
   font-size: 2rem;
   color: #d63384;
   max-width: 90%;
+  line-height: 1.4;
 }
 
 .buttons {
   margin-top: 30px;
+  position: relative;
 }
 
 button {
@@ -39,17 +49,12 @@ button {
   border: none;
   cursor: pointer;
   backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.4);
   color: #d63384;
   font-weight: 600;
   transition: all 0.5s ease;
   position: relative;
-}
-
-button:hover {
-  transform: scale(1.05);
 }
 
 .glow-yes {
@@ -79,26 +84,41 @@ button:hover {
   align-items: center;
 }
 
-/* END PAGE */
+/* END PAGE STYLING */
 
 #endPage {
   display: none;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 2;
+  justify-content: center;
+  padding: 20px;
 }
 
-#endPage p {
+.line1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: #c2185b;
+  margin-bottom: 15px;
+}
+
+.line2 {
+  font-family: 'Poppins', sans-serif;
   font-size: 1.2rem;
-  color: #b03060;
-  margin: 8px 0;
-  max-width: 85%;
+  margin-bottom: 15px;
+  color: #ad1457;
+}
+
+.line3 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.7rem;
+  max-width: 90%;
+  line-height: 1.6;
+  color: #880e4f;
+  margin-bottom: 20px;
 }
 
 #endPage img {
-  width: 220px;
-  margin: 15px 0;
+  width: 230px;
   border-radius: 20px;
 }
 
@@ -131,9 +151,13 @@ button:hover {
 </div>
 
 <div id="endPage">
-  <p>nice choice after all these attempts 😉</p>
-  <p>be ready by 7:15 , i will pick you up the table is booked</p>
-  <p>“It’s not about Valentine’s… it’s about you. And out of everything life could’ve given me, I’m really glad it gave me you</p>
+  <div class="line1">nice choice after all these attempts 😉</div>
+  <div class="line2">be ready by 7:15 , i will pick you up the table is booked</div>
+  <div class="line3">
+    “It’s not about Valentine’s… it’s about you. 
+    And out of everything life could’ve given me, 
+    I’m really glad it gave me you”
+  </div>
   <img src="moonwalk.gif" alt="Moonwalk">
 </div>
 
@@ -156,41 +180,26 @@ let noClickCount = 0;
 noBtn.addEventListener("click", () => {
   noClickCount++;
 
-  const messageIndex = (noClickCount - 1) % noMessages.length;
-  noBtn.innerText = noMessages[messageIndex];
+  if (noClickCount < 5) {
+    const messageIndex = (noClickCount - 1) % noMessages.length;
+    noBtn.innerText = noMessages[messageIndex];
+  }
 
-  const yesRect = yesBtn.getBoundingClientRect();
-  let x, y, overlap;
+  if (noClickCount === 5) {
+    yesBtn.classList.add("glow-yes");
+    noBtn.innerText = "Please 🥺";
+  }
 
-  do {
-    x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-    y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-
-    overlap = (
-      x < yesRect.right &&
-      x + noBtn.offsetWidth > yesRect.left &&
-      y < yesRect.bottom &&
-      y + noBtn.offsetHeight > yesRect.top
-    );
-  } while (overlap);
+  // Move button randomly
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
 
   noBtn.style.position = "absolute";
   noBtn.style.left = `${x}px`;
   noBtn.style.top = `${y}px`;
-
-  if (noClickCount === 5) {
-    yesBtn.classList.add("glow-yes");
-
-    noBtn.style.transition = "opacity 0.5s ease";
-    noBtn.style.opacity = "0";
-
-    setTimeout(() => {
-      noBtn.style.display = "none";
-    }, 500);
-  }
 });
 
-/* YES EXPAND EFFECT */
+/* YES EXPAND */
 
 yesBtn.addEventListener("click", () => {
   yesBtn.classList.add("expand");
@@ -202,23 +211,17 @@ yesBtn.addEventListener("click", () => {
   }, 700);
 });
 
-/* Flower shower */
+/* Flower Shower */
 
 function startFlowerShower() {
   setInterval(() => {
     const flower = document.createElement("div");
     flower.classList.add("falling");
     flower.innerText = Math.random() > 0.5 ? "🌹" : "🌻";
-
     flower.style.left = Math.random() * 100 + "vw";
     flower.style.animationDuration = (3 + Math.random() * 3) + "s";
-
     document.body.appendChild(flower);
-
-    setTimeout(() => {
-      flower.remove();
-    }, 6000);
-
+    setTimeout(() => flower.remove(), 6000);
   }, 300);
 }
 </script>
