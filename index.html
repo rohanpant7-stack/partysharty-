@@ -44,7 +44,7 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.4);
   color: #d63384;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
   position: relative;
 }
 
@@ -61,6 +61,22 @@ button:hover {
 @keyframes pulseGlow {
   from { transform: scale(1); }
   to { transform: scale(1.08); }
+}
+
+/* YES EXPANSION */
+
+.expand {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  font-size: 2rem;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* END PAGE */
@@ -82,7 +98,7 @@ button:hover {
 
 #endPage img {
   width: 220px;
-  margin-top: 15px;
+  margin: 15px 0;
   border-radius: 20px;
 }
 
@@ -115,10 +131,9 @@ button:hover {
 </div>
 
 <div id="endPage">
-  <p>this is a  perfect choice after clicking no soo many times</p>
-  <p>be ready by 7 :15 - the table is booked</p>
-  <p>“It’s not about Valentine’s… it’s about you.
-And out of everything life could’ve given me, I’m really glad it gave me you.”</p>
+  <p>nice choice after all these attempts 😉</p>
+  <p>be ready by 7:15 , i will pick you up the table is booked</p>
+  <p>“It’s not about Valentine’s… it’s about you. And out of everything life could’ve given me, I’m really glad it gave me you</p>
   <img src="moonwalk.gif" alt="Moonwalk">
 </div>
 
@@ -175,13 +190,19 @@ noBtn.addEventListener("click", () => {
   }
 });
 
+/* YES EXPAND EFFECT */
+
 yesBtn.addEventListener("click", () => {
-  mainPage.style.display = "none";
-  endPage.style.display = "flex";
-  startFlowerShower();
+  yesBtn.classList.add("expand");
+
+  setTimeout(() => {
+    mainPage.style.display = "none";
+    endPage.style.display = "flex";
+    startFlowerShower();
+  }, 700);
 });
 
-/* Continuous roses 🌹 and sunflowers 🌻 */
+/* Flower shower */
 
 function startFlowerShower() {
   setInterval(() => {
