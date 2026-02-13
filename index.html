@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Gauri 💖</title>
+<title>For G 💖</title>
 
 <style>
 body {
@@ -19,14 +19,16 @@ body {
   text-align: center;
 }
 
+/* FIRST PAGE */
+
 h1 {
   font-size: 2rem;
   color: #d63384;
+  max-width: 90%;
 }
 
 .buttons {
   margin-top: 30px;
-  position: relative;
 }
 
 button {
@@ -51,8 +53,8 @@ button:hover {
 }
 
 .glow-yes {
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.8),
-              0 0 40px rgba(255, 105, 180, 0.6);
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.9),
+              0 0 40px rgba(255, 105, 180, 0.7);
   animation: pulseGlow 1.2s infinite alternate;
 }
 
@@ -61,27 +63,43 @@ button:hover {
   to { transform: scale(1.08); }
 }
 
+/* END PAGE */
+
 #endPage {
   display: none;
   flex-direction: column;
   align-items: center;
-}
-
-#endPage h2 {
-  font-size: 1.8rem;
-  color: #d63384;
+  position: relative;
+  z-index: 2;
 }
 
 #endPage p {
   font-size: 1.2rem;
   color: #b03060;
-  margin-top: 15px;
+  margin: 8px 0;
+  max-width: 85%;
 }
 
 #endPage img {
-  margin-top: 20px;
   width: 220px;
+  margin-top: 15px;
   border-radius: 20px;
+}
+
+/* Falling flowers */
+
+.falling {
+  position: fixed;
+  top: -50px;
+  font-size: 24px;
+  animation: fall linear infinite;
+  z-index: 1;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
 }
 </style>
 </head>
@@ -89,7 +107,7 @@ button:hover {
 <body>
 
 <div id="mainPage">
-  <h1>Will you be my Valentine, Gauri? 💖</h1>
+  <h1>HEY MY G , WILL YOU BE MY VALENTINE FOREVER AND EVER ? 💖</h1>
   <div class="buttons">
     <button id="yesBtn">Yes 💕</button>
     <button id="noBtn">No 😅</button>
@@ -97,8 +115,10 @@ button:hover {
 </div>
 
 <div id="endPage">
-  <h2>Good choice MY G after all these failed attempt of clicking no wohooooooooo 💃</h2>
-  <p>You don’t have to say much… the way you exist already makes things better. ✨</p>
+  <p>this is a  perfect choice after clicking no soo many times</p>
+  <p>be ready by 7 :15 - the table is booked</p>
+  <p>“It’s not about Valentine’s… it’s about you.
+And out of everything life could’ve given me, I’m really glad it gave me you.”</p>
   <img src="moonwalk.gif" alt="Moonwalk">
 </div>
 
@@ -121,11 +141,9 @@ let noClickCount = 0;
 noBtn.addEventListener("click", () => {
   noClickCount++;
 
-  // Change text in loop
   const messageIndex = (noClickCount - 1) % noMessages.length;
   noBtn.innerText = noMessages[messageIndex];
 
-  // Random movement but prevent overlap
   const yesRect = yesBtn.getBoundingClientRect();
   let x, y, overlap;
 
@@ -145,16 +163,43 @@ noBtn.addEventListener("click", () => {
   noBtn.style.left = `${x}px`;
   noBtn.style.top = `${y}px`;
 
-  // Glow Yes after 5 clicks
   if (noClickCount === 5) {
     yesBtn.classList.add("glow-yes");
+
+    noBtn.style.transition = "opacity 0.5s ease";
+    noBtn.style.opacity = "0";
+
+    setTimeout(() => {
+      noBtn.style.display = "none";
+    }, 500);
   }
 });
 
 yesBtn.addEventListener("click", () => {
   mainPage.style.display = "none";
   endPage.style.display = "flex";
+  startFlowerShower();
 });
+
+/* Continuous roses 🌹 and sunflowers 🌻 */
+
+function startFlowerShower() {
+  setInterval(() => {
+    const flower = document.createElement("div");
+    flower.classList.add("falling");
+    flower.innerText = Math.random() > 0.5 ? "🌹" : "🌻";
+
+    flower.style.left = Math.random() * 100 + "vw";
+    flower.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+    document.body.appendChild(flower);
+
+    setTimeout(() => {
+      flower.remove();
+    }, 6000);
+
+  }, 300);
+}
 </script>
 
 </body>
