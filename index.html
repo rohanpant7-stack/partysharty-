@@ -1,230 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>For My G ❤️</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Gauri 💖</title>
 
 <style>
 body {
   margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #ffd6e8, #ffc0cb);
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #ffd6e7, #ffeaf4);
   overflow: hidden;
-  font-family: 'Poppins', sans-serif;
   text-align: center;
 }
 
 h1 {
-  margin-top: 18%;
-  color: #c2185b;
-  font-size: 2.2rem;
-  font-weight: 500;
+  font-size: 2rem;
+  color: #d63384;
+}
+
+.buttons {
+  margin-top: 30px;
+  position: relative;
 }
 
 button {
-  padding: 12px 28px;
-  font-size: 18px;
+  padding: 15px 35px;
+  margin: 10px;
+  font-size: 1.1rem;
+  border-radius: 20px;
   border: none;
-  border-radius: 30px;
   cursor: pointer;
-  position: absolute;
-  transition: 0.3s ease;
-  font-family: 'Pacifico', cursive;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #d63384;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-/* YES BUTTON */
-#yesBtn {
-  background: white;
-  color: #ff4d88;
-  left: 40%;
-  top: 55%;
-  animation: heartbeat 2s infinite;
+button:hover {
+  transform: scale(1.05);
 }
 
-/* Soft heartbeat */
-@keyframes heartbeat {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+.glow-yes {
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.8),
+              0 0 40px rgba(255, 105, 180, 0.6);
+  animation: pulseGlow 1.2s infinite alternate;
 }
 
-/* Glow stages */
-.softGlow {
-  box-shadow: 0 0 15px 5px rgba(255, 105, 180, 0.6);
+@keyframes pulseGlow {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
 }
 
-.strongGlow {
-  box-shadow: 0 0 30px 10px rgba(255, 20, 147, 0.9);
-}
-
-/* NO BUTTON */
-#noBtn {
-  background: #ff4d88;
-  color: white;
-  left: 55%;
-  top: 55%;
-}
-
-.finalScreen {
-  display: flex;
+#endPage {
+  display: none;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #ffe6f0;
-  color: #c2185b;
-  text-align: center;
-  padding: 20px;
-  font-family: 'Pacifico', cursive;
 }
 
-.finalScreen p {
-  font-size: 22px;
-  max-width: 650px;
+#endPage h2 {
+  font-size: 1.8rem;
+  color: #d63384;
 }
 
-/* Flower animation */
-.flower {
-  position: absolute;
-  font-size: 24px;
-  animation: fall linear infinite;
+#endPage p {
+  font-size: 1.2rem;
+  color: #b03060;
+  margin-top: 15px;
 }
 
-@keyframes fall {
-  0% { transform: translateY(-10vh); }
-  100% { transform: translateY(110vh); }
+#endPage img {
+  margin-top: 20px;
+  width: 220px;
+  border-radius: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="question">
-Hey MY G , WILL YOU BE MY VALENTINE FOR EVER AND EVER ?
-</h1>
+<div id="mainPage">
+  <h1>Will you be my Valentine, Gauri? 💖</h1>
+  <div class="buttons">
+    <button id="yesBtn">Yes 💕</button>
+    <button id="noBtn">No 😅</button>
+  </div>
+</div>
 
-<button id="yesBtn">Yes 💖</button>
-<button id="noBtn">No 😢</button>
+<div id="endPage">
+  <h2>Good choice MY G after all these failed attempt of clicking no wohooooooooo 💃</h2>
+  <p>You don’t have to say much… the way you exist already makes things better. ✨</p>
+  <img src="moonwalk.gif" alt="Moonwalk">
+</div>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const question = document.getElementById("question");
+const yesBtn = document.getElementById("yesBtn");
+const mainPage = document.getElementById("mainPage");
+const endPage = document.getElementById("endPage");
 
-let clickCount = 0;
-
-const noTexts = [
+const noMessages = [
   "Pleaseeeee 🥺",
   "Are you sure? 😭",
   "I am asking for the last time...",
-  "Main firse puchta hoon 😌",
   "Kaisa laga mera mazak 😂",
-  "Ek baar aur soch lo na 💕",
-  "Ab toh haan bol do ❤️"
+  "baar baar puchunga 💕"
 ];
 
+let noClickCount = 0;
+
 noBtn.addEventListener("click", () => {
+  noClickCount++;
 
-  clickCount++;
+  // Change text in loop
+  const messageIndex = (noClickCount - 1) % noMessages.length;
+  noBtn.innerText = noMessages[messageIndex];
 
-  if (clickCount <= noTexts.length) {
-    noBtn.innerText = noTexts[clickCount - 1];
-  }
-
-  // Grow YES button
-  let size = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-  yesBtn.style.fontSize = (size + 4) + "px";
-
-  // Glow activation
-  if (clickCount === 4) {
-    yesBtn.classList.add("softGlow");
-  }
-
-  if (clickCount === 5) {
-    yesBtn.classList.remove("softGlow");
-    yesBtn.classList.add("strongGlow");
-  }
-
-  // Move NO safely
-  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
-
-  let randomX, randomY, overlap;
+  // Random movement but prevent overlap
+  const yesRect = yesBtn.getBoundingClientRect();
+  let x, y, overlap;
 
   do {
-    randomX = Math.random() * maxX;
-    randomY = Math.random() * maxY;
+    x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
 
-    const yesRect = yesBtn.getBoundingClientRect();
-    const noRect = {
-      left: randomX,
-      top: randomY,
-      right: randomX + noBtn.offsetWidth,
-      bottom: randomY + noBtn.offsetHeight
-    };
-
-    overlap = !(
-      noRect.right < yesRect.left ||
-      noRect.left > yesRect.right ||
-      noRect.bottom < yesRect.top ||
-      noRect.top > yesRect.bottom
+    overlap = (
+      x < yesRect.right &&
+      x + noBtn.offsetWidth > yesRect.left &&
+      y < yesRect.bottom &&
+      y + noBtn.offsetHeight > yesRect.top
     );
-
   } while (overlap);
 
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
+  noBtn.style.position = "absolute";
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+
+  // Glow Yes after 5 clicks
+  if (noClickCount === 5) {
+    yesBtn.classList.add("glow-yes");
+  }
 });
 
 yesBtn.addEventListener("click", () => {
-
-  yesBtn.style.position = "fixed";
-  yesBtn.style.left = "0";
-  yesBtn.style.top = "0";
-  yesBtn.style.width = "100%";
-  yesBtn.style.height = "100%";
-  yesBtn.style.fontSize = "40px";
-  yesBtn.innerText = "YES 💖";
-  question.remove();
-  noBtn.remove();
-
-  setTimeout(() => {
-
-    document.body.innerHTML = `
-      <div class="finalScreen">
-        <p>
-        “It’s not about Valentine’s… it’s about you.<br><br>
-        And out of everything life could’ve given me, I’m really glad it gave me you.”
-        </p>
-        <p>
-        That’s a great choice after having sooo many failed attempts of clicking no 😉<br><br>
-        I will pick you up by 7:15 — get ready, the table is booked 💖
-        </p>
-        <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="200">
-      </div>
-    `;
-
-    startFlowerShower();
-
-  }, 800);
+  mainPage.style.display = "none";
+  endPage.style.display = "flex";
 });
-
-function startFlowerShower() {
-  setInterval(() => {
-    const flower = document.createElement("div");
-    flower.classList.add("flower");
-    flower.innerText = Math.random() > 0.5 ? "🌹" : "🌻";
-    flower.style.left = Math.random() * 100 + "vw";
-    flower.style.animationDuration = (3 + Math.random() * 3) + "s";
-    document.body.appendChild(flower);
-
-    setTimeout(() => {
-      flower.remove();
-    }, 6000);
-
-  }, 300);
-}
 </script>
 
 </body>
