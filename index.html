@@ -1,139 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My G 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+<title>For You ❤️</title>
+
 <style>
-* { box-sizing:border-box; }
-html, body { margin:0; width:100%; height:100%; }
-body { font-family:'Quicksand', sans-serif; background:#ffe6ef; overflow:hidden; }
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #ff758c, #ff7eb3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-#app { width:100vw; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; position:relative; }
-h1 { font-family:'Pacifico', cursive; color:#ff4d88; font-size:clamp(1.8rem,5vw,3rem); margin-bottom:30px; }
-.last-text { font-size:1.3rem; color:#444; margin:14px 0; max-width:90%; }
+.container {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
-button { border:none; border-radius:999px; padding:14px 36px; font-size:1.1rem; cursor:pointer; transition: transform 0.35s ease; max-width:90vw; }
-#yesBtn { background:#ff4d88; color:white; animation:pulse 2.5s infinite; z-index:2; }
-@keyframes pulse { 0% {transform:scale(1);} 50% {transform:scale(1.05);} 100% {transform:scale(1);} }
+h1 {
+  color: white;
+  font-size: 2.5rem;
+  margin-top: 20%;
+}
 
-#noBtn { margin-top:18px; background:#f5f5f5; color:#333; position:relative; }
+button {
+  padding: 12px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  position: absolute;
+}
 
-#overlay { position:fixed; inset:0; background:#ff4d88; opacity:0; pointer-events:none; z-index:999; transition:transform 0.8s ease, opacity 0.8s ease; transform:scale(0); }
-#overlay.active { opacity:1; transform:scale(25); }
+#yesBtn {
+  background-color: white;
+  color: #ff4d6d;
+  left: 40%;
+  top: 55%;
+}
 
-#lastScreen { position:fixed; inset:0; background:#ffe6ef; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; opacity:0; transition:opacity 0.8s ease; pointer-events:none; }
+#noBtn {
+  background-color: #ff4d6d;
+  color: white;
+  left: 55%;
+  top: 55%;
+}
 
-#lastScreen.show { opacity:1; pointer-events:auto; }
-
-.moonwalk { width:180px; max-width:70vw; margin:24px 0; }
-
-.flower { position:fixed; top:-40px; font-size:26px; animation:fall linear infinite; pointer-events:none; }
-@keyframes fall { to { transform:translateY(110vh); } }
+.glow {
+  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.9);
+  transform: scale(1.15);
+}
 </style>
 </head>
+
 <body>
 
-<div id="app">
-  <h1>Hey MY G 💕<br>will you be my valentine forever and ever?</h1>
-  <button id="yesBtn">Yes 💖</button>
-  <button id="noBtn">No 😶</button>
-</div>
-
-<div id="overlay"></div>
-
-<div id="lastScreen">
-  <p class="last-text">Good choice after all these failed attempts of saying no 😉</p>
-  <img class="moonwalk" src="moonwalk.gif" alt="Moonwalk"/>
-  <p class="last-text">Be ready by 7:15, I will pick you up — the table is booked 💫</p>
-  <p class="last-text">I hope you liked the flowers 🌹🌻</p>
+<div class="container">
+  <h1 id="question">Will you be my Valentine?</h1>
+  <button id="yesBtn">Yes ❤️</button>
+  <button id="noBtn">No 😢</button>
 </div>
 
 <script>
-const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const overlay = document.getElementById("overlay");
-const lastScreen = document.getElementById("lastScreen");
+const yesBtn = document.getElementById("yesBtn");
+const question = document.getElementById("question");
 
-let noCount = 0;
-let yesScale = 1;
+let clickCount = 0;
 
-// NO button text sequence
-const noTexts = [
-  "Are you sureeee? 🥺",
-  "Pleaseeeeeeeee 😢",
-  "Okay? 😏",
-  "Zuru zuru chale 😌",
-  "I am asking for final time 😬",
-  "Kaisa laga mera mazak 😄",
-  "Baar baar puchta rahunga 😎"
+const messages = [
+  "Are you sure? 🥺",
+  "Pleaseeeeeeee 😭",
+  "Ek baar aur soch lo na 🥹",
+  "Main serious hoon 😔",
+  "I'm asking for the final time...",
+  "Baar baar puchunga 😌",
+  "Ab toh maan jao na ❤️",
+  "Kaisa laga mera mazak 😂",
+  "Will you be my Valentine?"
 ];
 
-function moveNoButtonSafe(){
-    const padding = 20;
-    const rect = noBtn.getBoundingClientRect();
-    const yesRect = yesBtn.getBoundingClientRect();
-    const maxX = window.innerWidth - rect.width - padding;
-    const maxY = window.innerHeight - rect.height - padding;
+noBtn.addEventListener("click", () => {
 
-    let newX, newY, attempts = 0;
-    do {
-        newX = Math.random() * maxX;
-        newY = Math.random() * maxY;
-        attempts++;
-    } while (
-        newX < yesRect.right + padding &&
-        newX + rect.width > yesRect.left - padding &&
-        newY < yesRect.bottom + padding &&
-        newY + rect.height > yesRect.top - padding &&
-        attempts < 100
+  clickCount++;
+
+  if (clickCount < messages.length) {
+    question.innerText = messages[clickCount - 1];
+  }
+
+  // Grow YES button
+  let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+  yesBtn.style.fontSize = (currentSize + 5) + "px";
+
+  // Glow YES after 7 clicks
+  if (clickCount === 7) {
+    yesBtn.classList.add("glow");
+  }
+
+  // Move NO button randomly without overlapping YES
+  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+  let randomX, randomY;
+  let overlap;
+
+  do {
+    randomX = Math.random() * maxX;
+    randomY = Math.random() * maxY;
+
+    const yesRect = yesBtn.getBoundingClientRect();
+    const noRect = {
+      left: randomX,
+      top: randomY,
+      right: randomX + noBtn.offsetWidth,
+      bottom: randomY + noBtn.offsetHeight
+    };
+
+    overlap = !(
+      noRect.right < yesRect.left ||
+      noRect.left > yesRect.right ||
+      noRect.bottom < yesRect.top ||
+      noRect.top > yesRect.bottom
     );
 
-    noBtn.style.position = "fixed";
-    noBtn.style.left = newX + "px";
-    noBtn.style.top = newY + "px";
-}
+  } while (overlap);
 
-function startFlowerShower(){
-  setInterval(()=>{
-    const flower=document.createElement("div");
-    flower.className="flower";
-    flower.textContent=Math.random()>0.5?"🌹":"🌻";
-    flower.style.left=Math.random()*100+"vw";
-    flower.style.animationDuration=(3+Math.random()*3)+"s";
-    document.body.appendChild(flower);
-    setTimeout(()=>flower.remove(),7000);
-  },300);
-}
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
 
-// NO click
-noBtn.addEventListener("click",()=>{
-  noBtn.textContent = noTexts[noCount % noTexts.length];
-  noCount++;
-  yesScale += 0.2;
-  yesBtn.style.transform = `scale(${yesScale})`;
-  moveNoButtonSafe();
+  if (clickCount === messages.length) {
+    clickCount = 0;
+    yesBtn.classList.remove("glow");
+  }
 });
 
-// YES click
-yesBtn.addEventListener("click",()=>{
-  overlay.classList.add("active");
-  yesBtn.style.transition="transform 0.8s ease";
-  yesBtn.style.transform=`scale(1.2)`; 
-
-  setTimeout(()=>{
-    // Remove YES and NO buttons
-    yesBtn.style.display="none";
-    noBtn.style.display="none";
-
-    // Fade overlay out and show last screen
-    overlay.style.transition="opacity 0.8s ease";
-    overlay.style.opacity="0";
-    lastScreen.classList.add("show");
-
-    startFlowerShower();
-  },800);
+yesBtn.addEventListener("click", () => {
+  document.body.innerHTML = `
+    <div style="
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      background:linear-gradient(to right, #ff758c, #ff7eb3);
+      color:white;
+      font-family:Arial;
+      text-align:center;
+      flex-direction:column;
+      padding:20px;
+    ">
+      <h1>Yayyyyy ❤️🥰</h1>
+      <p style="font-size:22px; max-width:600px;">
+      It’s not about Valentine’s… it’s about you.<br><br>
+      And out of everything life could’ve given me, I’m really glad it gave me you.
+      </p>
+    </div>
+  `;
 });
 </script>
 
