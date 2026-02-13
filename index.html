@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For G 💖</title>
+<title>For G 💗</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -14,13 +14,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, #ffe6f0, #ffd6eb, #ffeaf6);
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #ffd6e7, #ffeaf4);
   overflow: hidden;
   text-align: center;
 }
-
-/* FIRST PAGE CENTER FIX */
 
 #mainPage {
   display: flex;
@@ -30,45 +28,44 @@ body {
 }
 
 h1 {
-  font-size: 2rem;
-  color: #d63384;
+  font-size: 2.2rem;
+  color: #c2185b;
   max-width: 90%;
   line-height: 1.4;
 }
 
 .buttons {
-  margin-top: 30px;
+  margin-top: 35px;
   position: relative;
 }
 
 button {
-  padding: 15px 35px;
-  margin: 10px;
+  padding: 16px 40px;
+  margin: 12px;
   font-size: 1.1rem;
-  border-radius: 20px;
+  border-radius: 30px;
   border: none;
   cursor: pointer;
-  backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #d63384;
+  backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #c2185b;
   font-weight: 600;
-  transition: all 0.5s ease;
-  position: relative;
+  box-shadow: 0 8px 25px rgba(255, 105, 180, 0.25);
+  transition: all 0.3s ease;
 }
 
 .glow-yes {
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.9),
-              0 0 40px rgba(255, 105, 180, 0.7);
-  animation: pulseGlow 1.2s infinite alternate;
+  box-shadow: 0 0 30px #ff4da6,
+              0 0 70px #ff4da6,
+              0 0 120px #ff80ab;
+  animation: divineGlow 1s infinite alternate;
 }
 
-@keyframes pulseGlow {
+@keyframes divineGlow {
   from { transform: scale(1); }
-  to { transform: scale(1.08); }
+  to { transform: scale(1.15); }
 }
-
-/* YES EXPANSION */
 
 .expand {
   position: fixed !important;
@@ -82,60 +79,59 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, #ffb6d9, #ff80ab);
+  color: white;
 }
 
-/* END PAGE STYLING */
+/* END PAGE */
 
 #endPage {
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 25px;
 }
 
 .line1 {
   font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  color: #c2185b;
-  margin-bottom: 15px;
+  font-size: 2rem;
+  color: #ad1457;
+  margin-bottom: 18px;
 }
 
 .line2 {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  color: #ad1457;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  color: #c2185b;
 }
 
 .line3 {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.7rem;
+  font-size: 1.9rem;
   max-width: 90%;
-  line-height: 1.6;
+  line-height: 1.7;
   color: #880e4f;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 #endPage img {
-  width: 230px;
-  border-radius: 20px;
+  width: 240px;
+  border-radius: 25px;
 }
 
-/* Falling flowers */
+/* FLOWERS */
 
 .falling {
   position: fixed;
   top: -50px;
-  font-size: 24px;
+  font-size: 26px;
   animation: fall linear infinite;
   z-index: 1;
 }
 
 @keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
+  to { transform: translateY(110vh); }
 }
 </style>
 </head>
@@ -154,8 +150,8 @@ button {
   <div class="line1">nice choice after all these attempts 😉</div>
   <div class="line2">be ready by 7:15 , i will pick you up the table is booked</div>
   <div class="line3">
-    “It’s not about Valentine’s… it’s about you. 
-    And out of everything life could’ve given me, 
+    “It’s not about Valentine’s… it’s about you.
+    And out of everything life could’ve given me,
     I’m really glad it gave me you”
   </div>
   <img src="moonwalk.gif" alt="Moonwalk">
@@ -176,30 +172,56 @@ const noMessages = [
 ];
 
 let noClickCount = 0;
+let yesScale = 1;
 
 noBtn.addEventListener("click", () => {
   noClickCount++;
 
-  if (noClickCount < 5) {
-    const messageIndex = (noClickCount - 1) % noMessages.length;
-    noBtn.innerText = noMessages[messageIndex];
+  // Rotate 5 messages
+  if (noClickCount <= 5) {
+    const index = (noClickCount - 1) % noMessages.length;
+    noBtn.innerText = noMessages[index];
   }
 
+  // On 5th click
   if (noClickCount === 5) {
+    noBtn.innerText = "Pleaseeeeee 🥺";
     yesBtn.classList.add("glow-yes");
-    noBtn.innerText = "Please 🥺";
   }
 
-  // Move button randomly
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  // Make YES bigger each time
+  yesScale += 0.1;
+  yesBtn.style.transform = `scale(${yesScale})`;
 
-  noBtn.style.position = "absolute";
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
+  moveNoButton();
 });
 
-/* YES EXPAND */
+function moveNoButton() {
+  const padding = 20;
+
+  const yesRect = yesBtn.getBoundingClientRect();
+
+  let x, y, overlap;
+
+  do {
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    x = Math.random() * maxX;
+    y = Math.random() * maxY;
+
+    overlap =
+      x < yesRect.right &&
+      x + noBtn.offsetWidth > yesRect.left &&
+      y < yesRect.bottom &&
+      y + noBtn.offsetHeight > yesRect.top;
+
+  } while (overlap);
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+}
 
 yesBtn.addEventListener("click", () => {
   yesBtn.classList.add("expand");
@@ -208,10 +230,8 @@ yesBtn.addEventListener("click", () => {
     mainPage.style.display = "none";
     endPage.style.display = "flex";
     startFlowerShower();
-  }, 700);
+  }, 800);
 });
-
-/* Flower Shower */
 
 function startFlowerShower() {
   setInterval(() => {
@@ -222,7 +242,7 @@ function startFlowerShower() {
     flower.style.animationDuration = (3 + Math.random() * 3) + "s";
     document.body.appendChild(flower);
     setTimeout(() => flower.remove(), 6000);
-  }, 300);
+  }, 250);
 }
 </script>
 
