@@ -1,115 +1,156 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>For You ❤️</title>
+<title>For My G ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to right, #ff758c, #ff7eb3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(135deg, #ffd6e8, #ffc0cb);
   height: 100vh;
-  font-family: Arial, sans-serif;
   overflow: hidden;
-}
-
-.container {
+  font-family: 'Poppins', sans-serif;
   text-align: center;
-  position: relative;
-  width: 100%;
-  height: 100%;
 }
 
 h1 {
-  color: white;
-  font-size: 2.5rem;
-  margin-top: 20%;
+  margin-top: 18%;
+  color: #c2185b;
+  font-size: 2.2rem;
+  font-weight: 500;
 }
 
 button {
-  padding: 12px 25px;
+  padding: 12px 28px;
   font-size: 18px;
   border: none;
-  border-radius: 25px;
+  border-radius: 30px;
   cursor: pointer;
-  transition: 0.3s ease;
   position: absolute;
+  transition: 0.3s ease;
+  font-family: 'Pacifico', cursive;
 }
 
+/* YES BUTTON */
 #yesBtn {
-  background-color: white;
-  color: #ff4d6d;
+  background: white;
+  color: #ff4d88;
   left: 40%;
   top: 55%;
+  animation: heartbeat 2s infinite;
 }
 
+/* Soft heartbeat */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Glow stages */
+.softGlow {
+  box-shadow: 0 0 15px 5px rgba(255, 105, 180, 0.6);
+}
+
+.strongGlow {
+  box-shadow: 0 0 30px 10px rgba(255, 20, 147, 0.9);
+}
+
+/* NO BUTTON */
 #noBtn {
-  background-color: #ff4d6d;
+  background: #ff4d88;
   color: white;
   left: 55%;
   top: 55%;
 }
 
-.glow {
-  box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.9);
-  transform: scale(1.15);
+.finalScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #ffe6f0;
+  color: #c2185b;
+  text-align: center;
+  padding: 20px;
+  font-family: 'Pacifico', cursive;
+}
+
+.finalScreen p {
+  font-size: 22px;
+  max-width: 650px;
+}
+
+/* Flower animation */
+.flower {
+  position: absolute;
+  font-size: 24px;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh); }
+  100% { transform: translateY(110vh); }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1 id="question">Will you be my Valentine?</h1>
-  <button id="yesBtn">Yes ❤️</button>
-  <button id="noBtn">No 😢</button>
-</div>
+<h1 id="question">
+Hey MY G , WILL YOU BE MY VALENTINE FOR EVER AND EVER ?
+</h1>
+
+<button id="yesBtn">Yes 💖</button>
+<button id="noBtn">No 😢</button>
 
 <script>
-const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
 const question = document.getElementById("question");
 
 let clickCount = 0;
 
-const messages = [
-  "Are you sure? 🥺",
-  "Pleaseeeeeeee 😭",
-  "Ek baar aur soch lo na 🥹",
-  "Main serious hoon 😔",
-  "I'm asking for the final time...",
-  "Baar baar puchunga 😌",
-  "Ab toh maan jao na ❤️",
+const noTexts = [
+  "Pleaseeeee 🥺",
+  "Are you sure? 😭",
+  "I am asking for the last time...",
+  "Main firse puchta hoon 😌",
   "Kaisa laga mera mazak 😂",
-  "Will you be my Valentine?"
+  "Ek baar aur soch lo na 💕",
+  "Ab toh haan bol do ❤️"
 ];
 
 noBtn.addEventListener("click", () => {
 
   clickCount++;
 
-  if (clickCount < messages.length) {
-    question.innerText = messages[clickCount - 1];
+  if (clickCount <= noTexts.length) {
+    noBtn.innerText = noTexts[clickCount - 1];
   }
 
   // Grow YES button
-  let currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-  yesBtn.style.fontSize = (currentSize + 5) + "px";
+  let size = parseFloat(window.getComputedStyle(yesBtn).fontSize);
+  yesBtn.style.fontSize = (size + 4) + "px";
 
-  // Glow YES after 7 clicks
-  if (clickCount === 7) {
-    yesBtn.classList.add("glow");
+  // Glow activation
+  if (clickCount === 4) {
+    yesBtn.classList.add("softGlow");
   }
 
-  // Move NO button randomly without overlapping YES
+  if (clickCount === 5) {
+    yesBtn.classList.remove("softGlow");
+    yesBtn.classList.add("strongGlow");
+  }
+
+  // Move NO safely
   const maxX = window.innerWidth - noBtn.offsetWidth - 20;
   const maxY = window.innerHeight - noBtn.offsetHeight - 20;
 
-  let randomX, randomY;
-  let overlap;
+  let randomX, randomY, overlap;
 
   do {
     randomX = Math.random() * maxX;
@@ -134,35 +175,56 @@ noBtn.addEventListener("click", () => {
 
   noBtn.style.left = randomX + "px";
   noBtn.style.top = randomY + "px";
-
-  if (clickCount === messages.length) {
-    clickCount = 0;
-    yesBtn.classList.remove("glow");
-  }
 });
 
 yesBtn.addEventListener("click", () => {
-  document.body.innerHTML = `
-    <div style="
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-      background:linear-gradient(to right, #ff758c, #ff7eb3);
-      color:white;
-      font-family:Arial;
-      text-align:center;
-      flex-direction:column;
-      padding:20px;
-    ">
-      <h1>Yayyyyy ❤️🥰</h1>
-      <p style="font-size:22px; max-width:600px;">
-      It’s not about Valentine’s… it’s about you.<br><br>
-      And out of everything life could’ve given me, I’m really glad it gave me you.
-      </p>
-    </div>
-  `;
+
+  yesBtn.style.position = "fixed";
+  yesBtn.style.left = "0";
+  yesBtn.style.top = "0";
+  yesBtn.style.width = "100%";
+  yesBtn.style.height = "100%";
+  yesBtn.style.fontSize = "40px";
+  yesBtn.innerText = "YES 💖";
+  question.remove();
+  noBtn.remove();
+
+  setTimeout(() => {
+
+    document.body.innerHTML = `
+      <div class="finalScreen">
+        <p>
+        “It’s not about Valentine’s… it’s about you.<br><br>
+        And out of everything life could’ve given me, I’m really glad it gave me you.”
+        </p>
+        <p>
+        That’s a great choice after having sooo many failed attempts of clicking no 😉<br><br>
+        I will pick you up by 7:15 — get ready, the table is booked 💖
+        </p>
+        <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="200">
+      </div>
+    `;
+
+    startFlowerShower();
+
+  }, 800);
 });
+
+function startFlowerShower() {
+  setInterval(() => {
+    const flower = document.createElement("div");
+    flower.classList.add("flower");
+    flower.innerText = Math.random() > 0.5 ? "🌹" : "🌻";
+    flower.style.left = Math.random() * 100 + "vw";
+    flower.style.animationDuration = (3 + Math.random() * 3) + "s";
+    document.body.appendChild(flower);
+
+    setTimeout(() => {
+      flower.remove();
+    }, 6000);
+
+  }, 300);
+}
 </script>
 
 </body>
